@@ -323,7 +323,8 @@ void kernel_lx (
 	uint32_t *output)
 {
 	unsigned absl = std::abs(levels);
-	/*tbb::task_group group;
+	/*
+	tbb::task_group group;
 	
 	if (levels<0){
 		auto fwd = [&] {erode_pixel(l, x, absl, h, &input[0], &right[0], &left[0], &output[0]);};
@@ -336,8 +337,8 @@ void kernel_lx (
 		group.run(fwd);
 		group.run(rev);
 	}
-	group.wait();*/
-
+	group.wait();
+	*/
 	if (levels<0) {
 		erode_pixel(l, x, absl, h, &input[0], &right[0], &left[0], &output[0]);
 		dilate_pixel(l + absl, x, absl, h, &input[0], &right[0], &left[0], &output[0]);
@@ -345,6 +346,7 @@ void kernel_lx (
 		dilate_pixel(l, x, absl, h, &input[0], &right[0], &left[0], &output[0]);
 		erode_pixel(l + absl, x, absl, h, &input[0], &right[0], &left[0], &output[0]);
 	}
+	
 }
 
 int main(int argc, char *argv[])
@@ -433,7 +435,7 @@ int main(int argc, char *argv[])
 					}
 
 					//Generate Results
-					/*
+					
 					auto loop_body = [=, &output] (unsigned int l){
 						for (unsigned int x = 0; x < h; x++) {
 							kernel_lx (l, x, levels, h, &center[0], &right[0], &left[0], &output[0]);
@@ -441,12 +443,13 @@ int main(int argc, char *argv[])
 					};
 					tbb::parallel_for (0u, absl, loop_body);
 					
-					*/
+					/**
 					for (unsigned int l = 0; l < absl; l++){
 						for (unsigned int x = 0; x < h; x++) {
 							kernel_lx (l, x, levels, h, &center[0], &right[0], &left[0], &output[0]);
 						}
 					}
+					*/
 					
 
 					// Capture output

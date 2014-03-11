@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <time.h>
 
+#include <alloca.h>
 #define __CL_ENABLE_EXCEPTIONS 
 #include "CL/cl.hpp"
 
@@ -121,7 +122,7 @@ bool read_blob(int fd, uint64_t cbBlob, void *pBlob)
 
 	uint64_t done = 0;
 	while (done<cbBlob){
-		int todo = (int)min(uint64_t(1) << 30, cbBlob - done);
+		int todo = (int)std::min(uint64_t(1) << 30, cbBlob - done);
 
 		int got = read(fd, pBytes + done, todo);
 		if (got == 0 && done == 0)
@@ -141,7 +142,7 @@ void write_blob(int fd, uint64_t cbBlob, const void *pBlob)
 
 	uint64_t done = 0;
 	while (done<cbBlob){
-		int todo = (int)min(uint64_t(1) << 30, cbBlob - done);
+		int todo = (int)std::min(uint64_t(1) << 30, cbBlob - done);
 
 		int got = write(fd, pBytes + done, todo);
 		if (got <= 0)
@@ -155,22 +156,22 @@ void write_blob(int fd, uint64_t cbBlob, const void *pBlob)
 
 uint32_t vmin(uint32_t a, uint32_t b)
 {
-	return min(a, b);
+	return std::min(a, b);
 }
 
 uint32_t vmin(uint32_t a, uint32_t b, uint32_t c)
 {
-	return min(a, min(b, c));
+	return std::min(a, std::min(b, c));
 }
 
 uint32_t vmin(uint32_t a, uint32_t b, uint32_t c, uint32_t d)
 {
-	return min(min(a, d), min(b, c));
+	return std::min(std::min(a, d), std::min(b, c));
 }
 
 uint32_t vmin(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t e)
 {
-	return min(e, min(min(a, d), min(b, c)));
+	return std::min(e, std::min(std::min(a, d), std::min(b, c)));
 }
 
 void erode_pixel(
@@ -231,22 +232,22 @@ void erode_pixel(
 
 uint32_t vmax(uint32_t a, uint32_t b)
 {
-	return max(a, b);
+	return std::max(a, b);
 }
 
 uint32_t vmax(uint32_t a, uint32_t b, uint32_t c)
 {
-	return max(a, max(b, c));
+	return std::max(a, std::max(b, c));
 }
 
 uint32_t vmax(uint32_t a, uint32_t b, uint32_t c, uint32_t d)
 {
-	return max(max(a, d), max(b, c));
+	return std::max(std::max(a, d), std::max(b, c));
 }
 
 uint32_t vmax(uint32_t a, uint32_t b, uint32_t c, uint32_t d, uint32_t e)
 {
-	return max(e, max(max(a, d), max(b, c)));
+	return std::max(e, std::max(std::max(a, d), std::max(b, c)));
 }
 
 void dilate_pixel(
@@ -339,7 +340,7 @@ void kernel_lx (
 //function to load kernel code
 std::string LoadSource(const char *fileName)
 {
-    std::string baseDir="cw5";
+    std::string baseDir="src";
     if(getenv("HPCE_CL_SRC_DIR")){
         baseDir=getenv("HPCE_CL_SRC_DIR");
     }
@@ -439,7 +440,7 @@ int main(int argc, char *argv[])
 	
 		cl::Context context(devices); 
 
-		std::string kernelSource=LoadSource("process_v5_kernel.cl");
+		std::string kernelSource=LoadSource("process_v4_kernel.cl");
 
 		//compiling sources into context
 		cl::Program::Sources sources;   // A vector of (data,length) pairs
